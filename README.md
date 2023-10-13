@@ -35,11 +35,11 @@ docker run -d --rm -p {YOUR-PORT}:8787 \
                 --name {YOUR-DOCKER-CONTAINER} xynicoo/rstudio:4.3-5
 ```
 
-To facilitate the use of Docker images, we have provided a shell script "docker_run_script" for starting Docker images. This shell script is provided as an example with the username XXX and R-studio server port 9936. Users can modify it according to their needs.
+To facilitate the use of Docker images, we have provided a shell script "docker_run_script" for starting Docker images. This shell script is provided as an example with the username XXX and R-studio server port 9999. Users can modify it according to their needs.
 
 Modify the file "docker_run_script", and run the following code in the shell:
 ```
-bash docker_run_script up {YOU-PORT}
+bash docker_run_script up 9999
 ```
 
 if only the two lines of feedback shown in the following image are displayed, without any errors, it indicates that the Docker image has been successfully run.
