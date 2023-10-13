@@ -1,15 +1,19 @@
 ## CM-Drug
+![资源 12@600x](https://github.com/cloudsummer/CM-Drug/assets/24847317/3881a629-728e-41d1-9963-09eaf29d3ad9)
+
 
 - [1. Download the docker image](#Download-the-docker-image)
 - [2. Run the docker image](#Run-the-docker-image)
-- [3. Dowload the file](#Dowload-the-file)
+- [3. Download the file](#Dowload-the-file)
 - [4. Running the code](#Running-the-code)
     
-![github_RNAseq_workflow](https://github.com/cloudsummer/ICBcomb/assets/24847317/1a84bded-588b-48e1-878a-8c3640fc8541)
 
 We utilized NEXTFLOW for the processing pipeline of bulk RNA-seq raw data of the datasets in ICBcomb, and the software used has been encapsulated within the Docker image: xynicoo/rnaseq:n3-fastpMqc.
 
 ### Download the docker image
+ ![资源 13@600x](https://github.com/cloudsummer/CM-Drug/assets/24847317/99e2bff0-685b-4264-a270-05856d663909)
+
+
 Just simply run the following code on a server with Docker and NextFlow installed:
 
 (Docker version we used is 20.10.21, build 20.10.21-0ubuntu1~22.04.3; the NextFlow version we used is 20.07.1 build 5412) 
@@ -39,13 +43,13 @@ Software detail in the docker image "xynicoo/rnaseq:n3-fastpMqc":
  
 - FeatureCounts (version 2.0.3) was used to calculate gene expression and get the raw counts (reads matrix).
 
-### Modify the file 2
+### Download the file
 
 Modify the file "nextflow.config"
 
 To run a Nextflow configuration file and specify parameters such as the path to the fastq files, reference genome path, user UID, and other relevant settings.
 
-### Running the workflow
+### Running the code
 
 Running the following code will initiate background processing, and save the log in "NF.log":
 
