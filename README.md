@@ -1,4 +1,4 @@
-## CM-Drug
+<img width="865" alt="image" src="https://github.com/cloudsummer/CM-Drug/assets/24847317/5097b6de-f2f3-49e7-9c42-bd7082ad8590">## CM-Drug
 ![资源 12@600x](https://github.com/cloudsummer/CM-Drug/assets/24847317/3881a629-728e-41d1-9963-09eaf29d3ad9)
 
 
@@ -57,5 +57,7 @@ To run a Nextflow configuration file and specify parameters such as the path to 
 ### Running the code
 
 After downloading the data, you will receive three folders representing three phases of LINCS data. Each time you run the code, copy one of the folders to your path and use 'setwd()' to set it as the working directory. This working directory corresponds to {work directory} in the code.
+
+
 
 
