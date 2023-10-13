@@ -50,7 +50,7 @@ if only the two lines of feedback shown in the following image are displayed, wi
 
 ### Download the file
 
-The size of the data for the input file is huge, because of the limitation of the size  we uploaded it to Google Drive.
+The size of the data for the input file is huge. Due to GitHub's file size limitations, we have uploaded the data to the Data Drive.
 
 To run a Nextflow configuration file and specify parameters such as the path to the fastq files, reference genome path, user UID, and other relevant settings.
 
