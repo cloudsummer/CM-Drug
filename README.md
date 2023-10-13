@@ -1,4 +1,4 @@
-<img width="865" alt="image" src="https://github.com/cloudsummer/CM-Drug/assets/24847317/5097b6de-f2f3-49e7-9c42-bd7082ad8590">## CM-Drug
+## CM-Drug
 ![资源 12@600x](https://github.com/cloudsummer/CM-Drug/assets/24847317/3881a629-728e-41d1-9963-09eaf29d3ad9)
 
 
