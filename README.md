@@ -4,7 +4,7 @@
 
 - [1. Download the docker image](#Download-the-docker-image)
 - [2. Run the docker image](#Run-the-docker-image)
-- [3. Download the file](#Dowload-the-file)
+- [3. Download the file](#Download-the-file)
 - [4. Running the code](#Running-the-code)
     
 
