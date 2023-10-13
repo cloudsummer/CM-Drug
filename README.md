@@ -14,52 +14,38 @@ We utilized NEXTFLOW for the processing pipeline of bulk RNA-seq raw data of the
  ![资源 13@600x](https://github.com/cloudsummer/CM-Drug/assets/24847317/99e2bff0-685b-4264-a270-05856d663909)
 The environments, dependencies, and toolkits required for our workflow have all been encapsulated into a Docker image. We utilized the Docker image to perform calculations.
 
-
 Just simply run the following code on a server with Docker and NextFlow installed:
 
 (Docker version we used is 20.10.21, build 20.10.21-0ubuntu1~22.04.3) 
 
 ```
-#the docker image was made by me (the author of ICBcomb)
+#the docker image was made by me (the author of CM-Drug)
 docker pull xynicoo/rstudio:4.3-5
 ```
 
 ### Run the docker image
 
-Modify the file of "parameters_of_RNAseq_workflow"
-
 All software parameters are preconfigured in the "parameters_of_RNAseq_workflow" file. If you need to modify the runtime parameters of the software, you can make changes to this file.
 
-docker run -d --rm -p {IP}:8787 \
-                -v /home/{YOUR-USER-NAME}:/home/xiay/{YOUR-USER-NAME}/ \
+docker run -d --rm -p {YOUR-PORT}:8787 \
+                -v /home/{YOUR-USER-NAME}:{THE PATH INSIDE THE DOCKER CONTAINTER YOU WANT TO MAP} \
                 -e USER={YOUR-USER-NAME} -e PASSWORD={YOUR-PASSWORD} \
-                -e USERID={YOUR-USERID UID} -e GROUPID={YOUR-GROUPID (GID)} -e ROOT=TRUE \
-                --name xiay_rstudio_${port} xynicoo/rstudio:4.3-5
+                -e USERID={YOUR-USERID (UID)} -e GROUPID={YOUR-GROUPID (GID)} -e ROOT=TRUE \
+                --name {YOUR-DOCKER-CONTAINER} xynicoo/rstudio:4.3-5
 
-Software detail in the docker image "xynicoo/rnaseq:n3-fastpMqc":
-
-- FastQC (version 0.11.9) was used for data quality control (QC).
-
-- Fastp (version 0.23.1) was employed for adapter sequence removal and trimming to obtain high-quality clean reads. 
- 
-- Clean reads were mapped to the human reference genome GRCh38 or the mouse reference genome GRCm39 by HISAT2 (version 2.2.1).
- 
-- SAMtools (version 1.16) was used to convert the “.sam” file into a “.bam” file.
- 
-- StringTie (version 2.2.1) was used to estimate the abundance of transcripts for each sample.
- 
-- FeatureCounts (version 2.0.3) was used to calculate gene expression and get the raw counts (reads matrix).
+Modify the file of "docker_run_script", and run the following code in the shell:
+```
+bash docker_run_script up {YOU-PORT}
+```
 
 ### Download the file
 
-Modify the file "nextflow.config"
+The size of the data for the input file is huge, because of the limitation of the size  we uploaded it to Google Drive.
 
 To run a Nextflow configuration file and specify parameters such as the path to the fastq files, reference genome path, user UID, and other relevant settings.
 
 ### Running the code
 
-Running the following code will initiate background processing, and save the log in "NF.log":
-
-```$ nohup nextflow ./parameters_of_RNAseq_workflow -with-docker xynicoo/rnaseq:n3-fastpMqc -c nextflow.config >> NF.log 2>&1 &```
+After downloading the data, you will receive three folders representing three phases of LINCS data. Each time you run the code, copy one of the folders to your path and use 'setwd()' to set it as the working directory. This working directory corresponds to {work directory} in the code.
 
 
