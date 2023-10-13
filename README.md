@@ -58,6 +58,8 @@ To run a Nextflow configuration file and specify parameters such as the path to 
 
 After downloading the data, you will receive three folders representing three phases of LINCS data. Each time you run the code, copy one of the folders to your path and use 'setwd()' to set it as the working directory. This working directory corresponds to {work directory} in the code.
 
+"CM-Drug-1.R" is used to process Phase 1 data, "CM-Drug-2.R" is used to process Phase 2 data, and "CM-Drug-New.R" is used to process the 2020 data.
+
 
 
 
