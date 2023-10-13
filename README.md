@@ -27,11 +27,13 @@ docker pull xynicoo/rstudio:4.3-5
 
 All software parameters are preconfigured in the "parameters_of_RNAseq_workflow" file. If you need to modify the runtime parameters of the software, you can make changes to this file.
 
+```
 docker run -d --rm -p {YOUR-PORT}:8787 \
                 -v /home/{YOUR-USER-NAME}:{THE PATH INSIDE THE DOCKER CONTAINTER YOU WANT TO MAP} \
                 -e USER={YOUR-USER-NAME} -e PASSWORD={YOUR-PASSWORD} \
                 -e USERID={YOUR-USERID (UID)} -e GROUPID={YOUR-GROUPID (GID)} -e ROOT=TRUE \
                 --name {YOUR-DOCKER-CONTAINER} xynicoo/rstudio:4.3-5
+```
 
 To facilitate the use of Docker images, we have provided a shell script for starting Docker images. This shell script is provided as an example with the username XXX and R-studio server port 9936. Users can modify it according to their needs.
 
