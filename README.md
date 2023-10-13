@@ -12,8 +12,10 @@ We utilized NEXTFLOW for the processing pipeline of bulk RNA-seq raw data of the
 
 ### Download the docker image
  ![资源 13@600x](https://github.com/cloudsummer/CM-Drug/assets/24847317/99e2bff0-685b-4264-a270-05856d663909)
+The environments, dependencies, and toolkits required for our workflow have all been encapsulated into a Docker image. We utilized the Docker image to perform calculations.
 
 
+In our workflow
 Just simply run the following code on a server with Docker and NextFlow installed:
 
 (Docker version we used is 20.10.21, build 20.10.21-0ubuntu1~22.04.3; the NextFlow version we used is 20.07.1 build 5412) 
