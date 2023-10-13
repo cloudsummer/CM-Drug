@@ -8,21 +8,20 @@
 - [4. Running the code](#Running-the-code)
     
 
-We utilized NEXTFLOW for the processing pipeline of bulk RNA-seq raw data of the datasets in ICBcomb, and the software used has been encapsulated within the Docker image: xynicoo/rnaseq:n3-fastpMqc.
+We utilized NEXTFLOW for the processing pipeline of bulk RNA-seq raw data of the datasets in ICBcomb, and the software used has been encapsulated within the Docker image: xynicoo/rstudio:4.3-5.
 
 ### Download the docker image
  ![资源 13@600x](https://github.com/cloudsummer/CM-Drug/assets/24847317/99e2bff0-685b-4264-a270-05856d663909)
 The environments, dependencies, and toolkits required for our workflow have all been encapsulated into a Docker image. We utilized the Docker image to perform calculations.
 
 
-In our workflow
 Just simply run the following code on a server with Docker and NextFlow installed:
 
-(Docker version we used is 20.10.21, build 20.10.21-0ubuntu1~22.04.3; the NextFlow version we used is 20.07.1 build 5412) 
+(Docker version we used is 20.10.21, build 20.10.21-0ubuntu1~22.04.3) 
 
 ```
 #the docker image was made by me (the author of ICBcomb)
-docker pull xynicoo/rnaseq:n3-fastpMqc
+docker pull xynicoo/rstudio:4.3-5
 ```
 
 ### Run the docker image
@@ -30,6 +29,12 @@ docker pull xynicoo/rnaseq:n3-fastpMqc
 Modify the file of "parameters_of_RNAseq_workflow"
 
 All software parameters are preconfigured in the "parameters_of_RNAseq_workflow" file. If you need to modify the runtime parameters of the software, you can make changes to this file.
+
+docker run -d --rm -p {IP}:8787 \
+                -v /home/{YOUR-USER-NAME}:/home/xiay/{YOUR-USER-NAME}/ \
+                -e USER={YOUR-USER-NAME} -e PASSWORD={YOUR-PASSWORD} \
+                -e USERID={YOUR-USERID UID} -e GROUPID={YOUR-GROUPID (GID)} -e ROOT=TRUE \
+                --name xiay_rstudio_${port} xynicoo/rstudio:4.3-5
 
 Software detail in the docker image "xynicoo/rnaseq:n3-fastpMqc":
 
