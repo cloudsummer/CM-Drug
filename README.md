@@ -49,7 +49,7 @@ if only the two lines of feedback shown in the following image are displayed, wi
 
 ### Download the file
 
-The size of the data for the input file is huge. Due to GitHub's file size limitations, we have uploaded the data to the Data Drive. You can download from following link:
+The size of the data for the input file is huge. Due to GitHub's file size limitations, we have uploaded the data to Google Drive. You can download it from the following link:
 
 https://drive.google.com/drive/folders/1sXLo5w_yuQDcS0XMMIsgpLCO9FliiGUf?usp=drive_link
 
