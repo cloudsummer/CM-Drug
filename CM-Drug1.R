@@ -1,12 +1,12 @@
-####Code of CM-drug
+####Code of CM_Drug
 
 #Function definition
-.Path001 = function(eachThreadDir, spid, type, idx) {
+.systemInfo = function(eachThreadDir, spid, type, idx) {
   tempInfo = sprintf('%s%s.%s.', eachThreadDir, spid, type)
   return(paste0(tempInfo, idx, '.trds'))
 }
 
-silenceRemove = function(paths, check = FALSE) {
+function.remove = function(paths, check = FALSE) {
   stopifnot(is.character(paths))
   stopifnot(is.logical(check))
   
@@ -18,12 +18,12 @@ silenceRemove = function(paths, check = FALSE) {
   }
 }
 
-silenceDoGC = function() {
+function.doGC = function() {
   # silence garbage collection (gc)
   invisible(gc())
 }
 
-SysGetSPID = function() {
+function.getPID = function() {
   # Get the process
   NODE = unlist(strsplit(Sys.info()['nodename'], '\\.'))[1]
   PID = Sys.getpid()
@@ -33,8 +33,7 @@ SysGetSPID = function() {
 
 
 #temporary directory
-
-SysGetTempDir = function(useRAM = TRUE, usecache = TRUE) {
+function.getTempDir = function(useRAM = TRUE, usecache = TRUE) {
   
   currentNode = unlist(strsplit(Sys.info()['nodename'], '\\.'), use.names = FALSE)[1]
   
@@ -55,11 +54,11 @@ SysGetTempDir = function(useRAM = TRUE, usecache = TRUE) {
   }
 }
 
-XZFread = function(file, sep = '\t', header = TRUE) {
+function.freadXZ = function(file, sep = '\t', header = TRUE) {
   stopifnot(is.character(file))
   require(data.table)
   
-  tempOutDir = sprintf('%sXZFread_%s/', SysGetTempDir(useRAM = TRUE, usecache = TRUE), SysGetSPID())
+  tempOutDir = sprintf('%sfunction.freadXZ_%s/', function.getTempDir(useRAM = TRUE, usecache = TRUE), function.getPID())
   dir.create(tempOutDir, showWarnings = FALSE, recursive = TRUE)
   
   secondStamp = format(Sys.time(), format = '%s')
@@ -68,10 +67,8 @@ XZFread = function(file, sep = '\t', header = TRUE) {
   xzCommand = sprintf('xz -d -c %s > %s', file, tempFilePath)
   system(command = xzCommand, ignore.stdout = FALSE, ignore.stderr = TRUE)
   
-  #read the file by fast way
   tempDT = fread(file = tempFilePath, sep = sep, header = header, showProgress = FALSE)
   
-  #Clean the temp
   file.remove(tempFilePath)
   
   return(tempDT)
@@ -92,11 +89,11 @@ XZFread = function(file, sep = '\t', header = TRUE) {
 }
 
 
-XZSaveRDS = function(obj, file, threads = 32, compression = 6) {
+function.XZSaveRDS = function(obj, file, threads = 32, compression = 6) {
 
   stopifnot(is.character(file))
   
-  silenceRemove(paths = file, check = TRUE)
+  function.remove(paths = file, check = TRUE)
   
   xzCommand = sprintf('xz -z -T %s -%s > %s', threads, compression, file)
   
@@ -109,7 +106,7 @@ XZSaveRDS = function(obj, file, threads = 32, compression = 6) {
 
 
 #Core & Minor gene sets
-setwd("/home/xiay/1_home_xiay/Project/PD1/R/42_CM-Drug_test/3_Nat_immuno_reviewer.use/work_directory_1/")
+setwd("workingDirectory/")
 
 list_CM_gene_set=list()
 
@@ -291,23 +288,23 @@ for (currentIndex in 1) {
     'pert_ctime',
     'pert_cdose'
   )
-  focusDF = unique(sampleMetadata[, selectionVector])
+  useDF = unique(sampleMetadata[, selectionVector])
   
   #Sample Counts
   sampleMetadata = as.data.table(sampleMetadata)
   setkey(sampleMetadata, rna_centre, pert_type, pert_cval)
-  focusDF$sampleCount = unlist(mclapply(1:nrow(focusDF), mc.preschedule = TRUE, mc.cores = 64, mc.cleanup = TRUE, FUN = function(i) {
-    tempCondition = focusDF[i, ]
+  useDF$sampleCount = unlist(mclapply(1:nrow(useDF), mc.preschedule = TRUE, mc.cores = 64, mc.cleanup = TRUE, FUN = function(i) {
+    tempCondition = useDF[i, ]
     return(sampleMetadata[.(tempCondition$rna_centre, tempCondition$pert_type, tempCondition$pert_cval), .N, nomatch = 0])
   }), recursive = FALSE, use.names = FALSE)
   sampleMetadata = as.data.frame(sampleMetadata)
   
   # Filter out Sample Size == 1
-  focusDF = subset(focusDF, sampleCount > 1)
+  useDF = subset(useDF, sampleCount > 1)
   
   # Prepare Subsets
-  casesDF = subset(focusDF, grepl('^trt', focusDF$pert_type))
-  controlsDF = subset(focusDF, grepl('^ctl', focusDF$pert_type))
+  casesDF = subset(useDF, grepl('^trt', useDF$pert_type))
+  controlsDF = subset(useDF, grepl('^ctl', useDF$pert_type))
   
   tempList = mclapply(1:nrow(casesDF), mc.preschedule = TRUE, mc.cores = 32, mc.cleanup = TRUE, FUN = function(currentRowIndex) {
     currentCondition = casesDF[currentRowIndex, ]
@@ -336,7 +333,7 @@ for (currentIndex in 1) {
       }
       
       if (any(c('PBS', 'H2O', 'UnTrt') %in% controlSubset$pert_iname)) {
-        # Baseline: PBS, H2O, Untreated Cells
+        # Baseline: PBS, H2O, Untreated
         controlSubset = subset(controlSubset, pert_iname %in% c('PBS', 'H2O', 'UnTrt'))
         finalOutput = controlSubset[order(controlSubset$sampleCount, decreasing = TRUE), ][1, ]
         return(SelectionResolver(conditionDF = currentCondition, controlDF = finalOutput))
@@ -350,17 +347,17 @@ for (currentIndex in 1) {
     
   })
   
-  # Assemble Condition Metadata
-  cat('Assemble Condition Metadata.\n')
+  # Condition Metadata
+  cat('Generateing Condition Metadata.\n')
   matchedMetadata = as.data.frame(do.call('rbind', tempList))
   
-  # Append Metadata to Finalized Version
+  # Final Metadata
   finalSampleMetadata = rbind(finalSampleMetadata, sampleMetadata)
   finalMatchedMetadata = rbind(finalMatchedMetadata, matchedMetadata)
   
   # Variable Cleanup
   rm(currentCase, currentDir)
-  rm(selectionVector, focusDF, casesDF, controlsDF, tempList)
+  rm(selectionVector, useDF, casesDF, controlsDF, tempList)
   rm(sampleMetadata, matchedMetadata)
 }
 
@@ -381,12 +378,12 @@ finalMatchedMetadata$ctl_final_sampleCount = as.numeric(finalMatchedMetadata$ctl
 cat('Now saving...\n')
 
 #Sample Metadata
-tempPath = sprintf('%ssample.metadata.RDS.XZ', outDir)
-XZSaveRDS(obj = finalSampleMetadata, file = tempPath)
+tempPath = sprintf('%sCM_Drug.sample', outDir)
+function.XZSaveRDS(obj = finalSampleMetadata, file = tempPath)
 
 #Matched Metadata
-tempPath = sprintf('%scondition.metadata.RDS.XZ', outDir)
-XZSaveRDS(obj = finalMatchedMetadata, file = tempPath)
+tempPath = sprintf('%sCM_Drug.condition', outDir)
+function.XZSaveRDS(obj = finalMatchedMetadata, file = tempPath)
 
 # cat(sprintf('START TIME: %s\n', .startTime))
 # START TIME: Fri Apr  1 10:08:28 2022
@@ -421,10 +418,10 @@ dir.create(ramDir, recursive = TRUE, showWarnings = FALSE)
 
 ################################################################################
 cat('Loading Metadata.\n')
-tempPath = sprintf('%ssample.metadata.RDS.XZ', metadataDir)
+tempPath = sprintf('%sCM_Drug.sample', metadataDir)
 sampleDF = readRDS(tempPath)
 
-tempPath = sprintf('%scondition.metadata.RDS.XZ', metadataDir)
+tempPath = sprintf('%sCM_Drug.condition', metadataDir)
 matchedDF = readRDS(tempPath)
 
 # Sample Metadata Trimming
@@ -442,24 +439,23 @@ referenceRow = cmapR::read_gctx_ids(gctx_path = inPath['Data.1'],
 )
 dataList = lapply(inPath, function(tempPath) {
   tempMatrix = parse_gctx(fname = tempPath)@mat[referenceRow, ]
-  silenceDoGC()
+  function.doGC()
   return(tempMatrix)
 })
 
 gctxMatrix = dataList[[1]]
 rm(dataList)
-silenceDoGC()
+function.doGC()
 
-# Data Matrix Trimming
 gctxMatrix = gctxMatrix[, sampleDF$Num]
-silenceDoGC()
+function.doGC()
 
 # Calculating
 cat('Calculating...\n')
 
 # Initiate Multi-Thread
 .startTime = date()
-currentSPID = SysGetSPID()
+currentSPID = function.getPID()
 referenceColumn = matchedDF$case_ID
 caseCount = length(matchedDF$case_ID)
 geneCount = length(referenceRow)
@@ -467,9 +463,9 @@ registerDoParallel(cores = 180)
 
 # Cleaning Cache
 allPath = c(
-  .Path001(eachThreadDir = ramDir, spid = currentSPID, type = 'lincs_fc', idx = 1:caseCount)
+  .systemInfo(eachThreadDir = ramDir, spid = currentSPID, type = 'CM_Drug.data', idx = 1:caseCount)
 )
-silenceRemove(paths = allPath, check = TRUE)
+function.remove(paths = allPath, check = TRUE)
 
 # Parallel Processing
 cat('Begin Calculating Job: ')
@@ -505,14 +501,14 @@ tempOutput = foreach(i = 1:caseCount, .inorder = TRUE) %dopar% {
   tempFC = rowMeans(trtData) - rowMeans(ctlData)
 
   # Save File
-  tempPath = .Path001(eachThreadDir = ramDir, spid = currentSPID, type = 'lincs_fc', idx = i)
-  XZSaveRDS(obj = tempFC, file = tempPath)
+  tempPath = .systemInfo(eachThreadDir = ramDir, spid = currentSPID, type = 'CM_Drug.data', idx = i)
+  function.XZSaveRDS(obj = tempFC, file = tempPath)
   
   # Variable Cleanup
   rm(currentTask, trtSamples, ctlSamples)
   rm(trtData, ctlData)
   rm(tempResult, tempFC)
-  silenceDoGC()
+  function.doGC()
   return(NULL)
 }
 
@@ -521,24 +517,24 @@ registerDoSEQ()
 
 #clean-up the variable 
 rm(matchedDF, sampleDF, gctxMatrix, allPath, tempOutput)
-silenceDoGC()
+function.doGC()
 cat('clean-up have been done.\n')
 
 tempMatrix = foreach(i = 1:caseCount, .inorder = TRUE, .combine = cbind, .maxcombine = 1000) %do% {
-  tempPath = .Path001(eachThreadDir = ramDir, spid = currentSPID, type = 'lincs_fc', idx = i)
+  tempPath = .systemInfo(eachThreadDir = ramDir, spid = currentSPID, type = 'CM_Drug.data', idx = i)
   return(readRDS(tempPath))
 }
 colnames(tempMatrix) = referenceColumn
 rownames(tempMatrix) = referenceRow
 
-tempPath = sprintf('%sfc.matrix.RDS.XZ', outDir)
-XZSaveRDS(obj = tempMatrix, file = tempPath)
+tempPath = sprintf('%sCM_Drug.sample', outDir)
+function.XZSaveRDS(obj = tempMatrix, file = tempPath)
 rm(tempMatrix)
-silenceDoGC()
-silenceRemove(paths = .Path001(eachThreadDir = ramDir, spid = currentSPID, type = 'lincs_fc', idx = 1:caseCount))
+function.doGC()
+function.remove(paths = .systemInfo(eachThreadDir = ramDir, spid = currentSPID, type = 'CM_Drug.data', idx = 1:caseCount))
 
 # Directory Cleanup
-silenceRemove(ramDir)
+function.remove(ramDir)
 
 # Print Timestamp
 cat(sprintf('START TIME: %s\n', .startTime))
@@ -554,15 +550,16 @@ cat(sprintf('END TIME: %s\n\n', date()))
 
 
 
-fc.matrix <- readRDS("./Data/Compound_Data/fc.matrix.RDS.XZ")
-fc.compound_pert.gtc<- new("GCT", mat=fc.matrix)
-write_gctx(fc.compound_pert.gtc, 
+CM_Drug.data <- readRDS("./Data/Compound_Data/CM_Drug.sample")
+CM_Drug.data.gtc<- new("GCT", mat=CM_Drug.data)
+write_gctx(CM_Drug.data.gtc, 
            #compression_level = 9,
-           "./Data/Compound_Data/fc.compound_pert")
+           "./Data/Compound_Data/CM_Drug.data.gctx",
+           appenddim = FALSE)
 
 rm(list = ls())
-setwd("/home/xiay/1_home_xiay/Project/PD1/R/42_CM-Drug_test/3_Nat_immuno_reviewer.use/work_directory_1/")
-metadata.condition <- readRDS("./Data/Compound_Data/condition.metadata.RDS.XZ")
+setwd("workingDirectory/")
+CM_Drug.condition <- readRDS("./Data/Compound_Data/CM_Drug.condition")
 
 
 data_trt_cp <- list()
@@ -571,16 +568,16 @@ fgsea.sam.trt_cp <- list()
 fgsea.res.trt_cp <- list()
 trt_cp_number.group <- list()
 
-trt_cp_number <- which(metadata.condition$trt_type == "trt_cp")
+trt_cp_number <- which(CM_Drug.condition$trt_type == "trt_cp")
 
 trt_cp_number.group[[1]] <- trt_cp_number[1:length(trt_cp_number)]
 
-template <- parse_gctx("Data/Compound_Data/fc.compound_pert_n20936x12328.gctx",
+template <- parse_gctx("Data/Compound_Data/CM_Drug.data.gctx",
                        rid=1:12328, cid=1:10)@mat %>% as.data.frame()
 
 template <- template %>% dplyr::mutate(gene_id=rownames(template ))
 
-gene_df <- read.delim("./gene_df.1.txt")
+gene_df <- read.delim("./gene_df.1")
 
 template$gene_id <- as.integer(template$gene_id)
 
@@ -599,7 +596,7 @@ options(
 library(fgsea)
 library(cmapR)
 library(tidyverse)
-setwd("~/1_home_xiay/Project/PD1/R/42_CM-Drug_test/3_Nat_immuno_reviewer.use/work_directory_1/")
+setwd("workingDirectory/")
 resultDir="./result/cp/"
 dir.create(resultDir, recursive = TRUE, showWarnings = FALSE)
 load("./template.RData")
@@ -612,7 +609,7 @@ plan(multisession, workers = 120)
 .startTime = date()
 
 for(j in c(1)){
-  setwd("~/1_home_xiay/Project/PD1/R/42_CM-Drug_test/3_Nat_immuno_reviewer.use/work_directory_1/")
+  setwd("workingDirectory/")
   load("./template.RData")
   
   fun_cmap_fgsea <- function(x){
@@ -622,7 +619,7 @@ for(j in c(1)){
     return(fgsea.res)
   }
   genesets <- readRDS("super.third.human.pd1.all.RDS")
-  data_trt_cp[[j]] <- parse_gctx("./Data/Compound_Data/fc.compound_pert_n20936x12328.gctx", 
+  data_trt_cp[[j]] <- parse_gctx("./Data/Compound_Data/CM_Drug.data.gctx", 
                                  rid=1:12328, cid=trt_cp_number.group[[j]])
   data_trt_cp.df[[j]] <- as.data.frame(data_trt_cp[[j]]@mat)
   fgsea.res.trt_cp[[j]] <- furrr::future_map(data_trt_cp.df[[j]], ~ fun_cmap_fgsea(.x))
@@ -637,8 +634,8 @@ cat(sprintf('END TIME: %s\n\n', date()))
 ################################################################################
 #tidy the results
 
-setwd("/home/xiay/1_home_xiay/Project/PD1/R/42_CM-Drug_test/3_Nat_immuno_reviewer.use/work_directory_1/result/cp/")
-load("/home/xiay/1_home_xiay/Project/PD1/R/42_CM-Drug_test/3_Nat_immuno_reviewer.use/work_directory_1/template.RData")
+setwd("workingDirectory/result/cp/")
+load("workingDirectory/template.RData")
 
 fgsea.res.trt_cp <- list()
 for(i in 1){fgsea.res.trt_cp[[i]] <- readRDS(paste("./c",i,"_fgsea.res.trt_cp_super.RDS",sep = ""))}
@@ -662,7 +659,7 @@ for(i in 1:8){
 
 saveRDS(fgsea.clue.order_with_id,"fgsea.clue.order_with_id.RDS")
 
-setwd("/home/xiay/1_home_xiay/Project/PD1/R/42_CM-Drug_test/3_Nat_immuno_reviewer.use/work_directory_1/")
+setwd("workingDirectory/")
 
 fgsea.clue.order <- readRDS("./result/cp/fgsea.clue.order_with_id.RDS")
 
@@ -707,7 +704,7 @@ good.score <- vector();
 #CM-Score
 for(i in 1:dim(list.good[[1]])[1]){good.score[i] <- 0.4986+0.0969*good.df[,1][i]+0.0892*good.df[,2][i]+0.0307*good.df[,3][i]+0.0117*good.df[,4][i]+0.0124*good.df[,6][i]+ 0.0213*good.df[,7][i]}
 
-metadata.condition <- readRDS("./Data/Compound_Data/condition.metadata.RDS.XZ")
+CM_Drug.condition <- readRDS("./Data/Compound_Data/CM_Drug.condition")
 
 good.df.withscore <- data.frame(good.score,good.df)
 
@@ -721,7 +718,7 @@ good.id.order <- good.id[as.numeric(good.df.withscore.order$good_id_index)]
 
 good.id.order.trt_number <- trt_cp_number[as.numeric(good.id.order)]
 
-sig_info.choose <- metadata.condition[good.id.order.trt_number,]
+sig_info.choose <- CM_Drug.condition[good.id.order.trt_number,]
 
 sig_info.choose <- data.frame(1:dim(list.good[[1]])[1],sig_info.choose)
 
@@ -762,5 +759,5 @@ drug.choose.detail[is.na( drug.choose.detail)] <- -666 #in original metadata -66
 
 #save in excel file-type
 library(openxlsx)
-openxlsx::write.xlsx(x = drug.choose.detail , file = "./result/results_with_CM_Drug.2.xlsx",
+openxlsx::write.xlsx(x = drug.choose.detail , file = "./result/cp/results_with_CM_Drug.1.xlsx",
                      sheetName = "screenResult", rownames = FALSE)
