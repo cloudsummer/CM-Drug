@@ -412,8 +412,8 @@ options(
 outDir = 'Data/Compound_Data/'
 dir.create(outDir, recursive = TRUE, showWarnings = FALSE)
 
-# Creation of Interim RAM-backed Output Directory
-ramDir = '/home/xiay/1_home_xiay/ramdisk/'
+# To increase the read and write speed of the results, this portion is output to the memory disk
+ramDir = 'ramdisk/'
 dir.create(ramDir, recursive = TRUE, showWarnings = FALSE)
 
 ################################################################################
