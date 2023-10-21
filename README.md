@@ -55,11 +55,11 @@ https://drive.google.com/drive/folders/1sXLo5w_yuQDcS0XMMIsgpLCO9FliiGUf?usp=dri
 
 ### Running the code
 
-After downloading the data, you will receive three folders ("New", "1" and "2"), 
+After downloading the data, you will receive three folders ("New", "1" and "2"), representing three phases of data.
 
 <img width="309" alt="image" src="https://github.com/cloudsummer/CM-Drug/assets/24847317/1c967e97-1ef1-4445-9af1-ef7ee5850e2e">
 
-representing three phases of data. Each time you run the code, copy one of the folders to your path and use 'setwd()' (in the R environment) to set it as the working directory. This working directory corresponds to {work directory} in the code.
+Each time you run the code, copy one of the folders to your path and set it as the working directory. This working directory corresponds to {work directory} in the code.
 
 "CM-Drug-1.R" is used to process Phase 1 data, "CM-Drug-2.R" is used to process Phase 2 data, and "CM-Drug-New.R" is used to process the 2020 data.
 
