@@ -23,9 +23,9 @@ function usage {
 		echo "	dn -> shutdown a container or all container of xy_rocker."
 		echo "	ex -> exec xy_rocker container."
 		echo "	ss -> status of xy_rocker container."
-		echo "	imgs -> list images of xynicoo/rstudio:4.2.1-9"
-		echo "	rmi -> remove image of xynicoo/rstudio:4.2.1-9"
-		echo "	pull -> pull latest image of xynicoo/rstudio:4.2.1-9"
+		echo "	imgs -> list images of xynicoo/rstudio:4.3-5"
+		echo "	rmi -> remove image of xynicoo/rstudio:4.3-5"
+		echo "	pull -> pull latest image of xynicoo/rstudio:4.3-5"
 		echo "For example:"
 		echo "	xy_rocker up 9191"
 		exit 1
