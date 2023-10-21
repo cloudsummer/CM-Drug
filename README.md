@@ -19,7 +19,7 @@ Just simply run the following code on a server with Docker installed:
 
 ```
 #the docker image was made by the author of CM-Drug
-docker pull xynicoo/rstudio:4.3-5
+docker pull xynicoo/rstudio:4.3-7
 ```
 
 ### Run the docker image
@@ -31,7 +31,7 @@ docker run -d --rm -p {YOUR-PORT}:8787 \
                 -v /home/{YOUR-USER-NAME}:{THE PATH INSIDE THE DOCKER CONTAINTER YOU WANT TO MAP} \
                 -e USER={YOUR-USER-NAME} -e PASSWORD={YOUR-PASSWORD} \
                 -e USERID={YOUR-USERID (UID)} -e GROUPID={YOUR-GROUPID (GID)} -e ROOT=TRUE \
-                --name {YOUR-DOCKER-CONTAINER} xynicoo/rstudio:4.3-5
+                --name {YOUR-DOCKER-CONTAINER} xynicoo/rstudio:4.3-7
 ```
 
 To facilitate the use of Docker images, we have provided a shell script "docker_run_script" for starting Docker images. This shell script is provided as an example with the username XXX and R-studio server port 9999. Users can modify it according to their needs.
