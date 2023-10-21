@@ -57,7 +57,7 @@ https://drive.google.com/drive/folders/1sXLo5w_yuQDcS0XMMIsgpLCO9FliiGUf?usp=dri
 
 After downloading the data, you will receive three folders ("New", "1" and "2"), 
 
-<img width="319" alt="image" src="https://github.com/cloudsummer/CM-Drug/assets/24847317/8dfb8a86-debc-4594-a73e-de7d5cb9aa69">
+<img width="309" alt="image" src="https://github.com/cloudsummer/CM-Drug/assets/24847317/1c967e97-1ef1-4445-9af1-ef7ee5850e2e">
 
 representing three phases of data. Each time you run the code, copy one of the folders to your path and use 'setwd()' (in the R environment) to set it as the working directory. This working directory corresponds to {work directory} in the code.
 
