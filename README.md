@@ -55,7 +55,7 @@ https://drive.google.com/drive/folders/1sXLo5w_yuQDcS0XMMIsgpLCO9FliiGUf?usp=dri
 
 ### Running the code
 
-After downloading the data, you will receive three folders ("New", "1" and "2") representing three phases of LINCS data. Each time you run the code, copy one of the folders to your path and use 'setwd()' to set it as the working directory. This working directory corresponds to {work directory} in the code.
+After downloading the data, you will receive three folders ("New", "1" and "2") representing three phases of data. Each time you run the code, copy one of the folders to your path and use 'setwd()' (in the R environment) to set it as the working directory. This working directory corresponds to {work directory} in the code.
 
 "CM-Drug-1.R" is used to process Phase 1 data, "CM-Drug-2.R" is used to process Phase 2 data, and "CM-Drug-New.R" is used to process the 2020 data.
 
