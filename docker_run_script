@@ -71,7 +71,8 @@ function up {
 
 	[[ ${port} -lt 8686 ]] && echo "Error: New port should be larger than 8686." && exit 1
 
-
+	jd=/home/USER/.xyrocker/xyrocker-${port}
+        
                 docker run -d --rm -p ${port}:8787 \
                 -v ${jd}:${HOME}/ \
                 -v /home/USER:/home/USER/1_home_USER/ \
