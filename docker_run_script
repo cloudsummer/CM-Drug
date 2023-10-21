@@ -23,9 +23,9 @@ function usage {
 		echo "	dn -> shutdown a container or all container of xy_rocker."
 		echo "	ex -> exec xy_rocker container."
 		echo "	ss -> status of xy_rocker container."
-		echo "	imgs -> list images of xynicoo/rstudio:4.3-5"
-		echo "	rmi -> remove image of xynicoo/rstudio:4.3-5"
-		echo "	pull -> pull latest image of xynicoo/rstudio:4.3-5"
+		echo "	imgs -> list images of xynicoo/rstudio:4.3-7"
+		echo "	rmi -> remove image of xynicoo/rstudio:4.3-7"
+		echo "	pull -> pull latest image of xynicoo/rstudio:4.3-7"
 		echo "For example:"
 		echo "	xy_rocker up 9191"
 		exit 1
@@ -78,7 +78,7 @@ function up {
                 -v /home/USER:/home/USER/1_home_USER/ \
                 -e USER=${USER} -e PASSWORD=PASSWORD \
 		-e USERID=$UID  -e GROUPID=$GID -e ROOT=TRUE \
-		--name USER_rstudio_${port} xynicoo/rstudio:4.3-5
+		--name USER_rstudio_${port} xynicoo/rstudio:4.3-7
 
 	echo "Start xy_rocker successfully with port ${port}."
 }
@@ -142,7 +142,7 @@ function ex {
 }
 
 function imgs {
-	docker image ls xynicoo/rstudio:4.3-5
+	docker image ls xynicoo/rstudio:4.3-7
 }
 
 function rmi {
@@ -157,7 +157,7 @@ function rmi {
 }
 
 function pull {
-	docker pull xynicoo/rstudio:4.3-5
+	docker pull xynicoo/rstudio:4.3-7
 }
 
 usage
