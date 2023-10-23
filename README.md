@@ -64,7 +64,7 @@ Each time you run the code, copy one of the folders to your path and set it as t
 "CM-Drug-1.R" is used to process Phase 1 data, "CM-Drug-2.R" is used to process Phase 2 data, and "CM-Drug-New.R" is used to process the 2020 data.
 
 
-https://github.com/cloudsummer/CM-Drug/assets/24847317/5da42804-6bf3-425d-9bba-6387494dfc9d
+<div style="display:none">https://github.com/cloudsummer/CM-Drug/assets/24847317/5da42804-6bf3-425d-9bba-6387494dfc9d
 
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/51E8Q5B4m3I/0.jpg)](https://youtu.be/51E8Q5B4m3I)
 
