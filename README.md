@@ -6,6 +6,7 @@
 - [2. Run the docker image](#Run-the-docker-image)
 - [3. Download the file](#Download-the-file)
 - [4. Running the code](#Running-the-code)
+- [5. Demo](#Demo)
     
 
 ### Download the docker image
@@ -61,9 +62,11 @@ After downloading the data, you will receive three folders ("New", "1" and "2"),
 
 Each time you run the code, copy one of the folders to your path and set it as the working directory. This working directory corresponds to {work directory} in the code.
 
-"CM-Drug-1.R" is used to process Phase 1 data, "CM-Drug-2.R" is used to process Phase 2 data, and "CM-Drug-New.R" is used to process the 2020 data.
+"CM-Drug-New.R" is used to process the 2020 New data, "CM-Drug-1.R" is used to process Phase 1 data, "CM-Drug-2.R" is used to process Phase 2 data.
 
 After building the Docker image and preparing the files, you can run the code. 
+
+### Demo
 
 Below is the video we created, demonstrating the code execution process using CM-Drug-New as an example.
 
