@@ -10,7 +10,8 @@
     
 
 ### Download the docker image
-![Uploading 资源 16@600x.png…]()
+![资源 16@600x](https://github.com/cloudsummer/CM-Drug/assets/24847317/4fdaa516-e77b-4fdd-870e-f5b5707ab563)
+
 
 
 The environments, dependencies, and toolkits required for our workflow have all been encapsulated into a Docker image. We utilized the Docker image to perform calculations.
