@@ -1,5 +1,5 @@
 ## CM-Drug
-![资源 15@600x](https://github.com/cloudsummer/CM-Drug/assets/24847317/19d9cbc4-47e1-481c-8e31-c7ea3330b999)
+![资源 15@600x](https://github.com/cloudsummer/CM-Drug/assets/24847317/7c7daebb-974b-4262-919f-fcf56e82f440)
 
 
 - [1. Download the docker image](#Download-the-docker-image)
@@ -10,7 +10,8 @@
     
 
 ### Download the docker image
-![资源 16@600x](https://github.com/cloudsummer/CM-Drug/assets/24847317/c2e47ed2-07bc-4298-904b-5df33fb3b580)
+![Uploading 资源 16@600x.png…]()
+
 
 The environments, dependencies, and toolkits required for our workflow have all been encapsulated into a Docker image. We utilized the Docker image to perform calculations.
 
