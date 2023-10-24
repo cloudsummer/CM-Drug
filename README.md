@@ -47,6 +47,7 @@ bash docker_run_script up 9999
 if only the two lines of feedback shown in the following image are displayed, without any errors, it indicates that the Docker image has been successfully run.
 
 <img width="400" alt="image" src="https://github.com/cloudsummer/CM-Drug/assets/24847317/f8333d97-2d0c-4456-a322-ac370d694bbf">
+<img width="407" alt="image" src="https://github.com/cloudsummer/CM-Drug/assets/24847317/afe1e273-0e3f-4f8e-8322-df08c05f4e67">
 
 
 
@@ -60,7 +61,8 @@ https://drive.google.com/drive/folders/1sXLo5w_yuQDcS0XMMIsgpLCO9FliiGUf?usp=dri
 
 After downloading the data, you will receive three folders ("New", "1" and "2"), representing three phases of data.
 
-<img width="309" alt="image" src="https://github.com/cloudsummer/CM-Drug/assets/24847317/1c967e97-1ef1-4445-9af1-ef7ee5850e2e">
+<img width="315" alt="image" src="https://github.com/cloudsummer/CM-Drug/assets/24847317/4d36ed29-8cfd-4632-842f-5902c4beb658">
+
 
 Each time you run the code, copy one of the folders to your path and set it as the working directory. This working directory corresponds to {work directory} in the code.
 
