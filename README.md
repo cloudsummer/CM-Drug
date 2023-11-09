@@ -75,7 +75,7 @@ Below is the video we created, demonstrating the code execution process using CM
 
 (Click on the image below to be redirected to the corresponding YouTube video link.)
 
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/51E8Q5B4m3I/0.jpg)](https://youtu.be/51E8Q5B4m3I)
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/51E8Q5B4m3I/0.jpg)](https://www.youtube.com/watch?v=51E8Q5B4m3I)
 
 
 
