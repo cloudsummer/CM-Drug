@@ -6,8 +6,6 @@
 - [2. Run the docker image](#Run-the-docker-image)
 - [3. Download the file](#Download-the-file)
 - [4. Running the code](#Running-the-code)
-
-  "CM-Drug-New.R" is used to process the 2020 New data, "CM-Drug-1.R" is used to process Phase 1 data, "CM-Drug-2.R" is used to process Phase 2 data.
 - [5. Demo](#Demo)
     
 
@@ -43,7 +41,7 @@ To facilitate the use of Docker images, we have provided a shell script "docker_
 
 Modify the file "docker_run_script", and run the following code in the shell:
 ```
-bash docker_run_script up 9998
+bash docker_run_script up 9999
 ```
 
 if only the two lines of feedback shown in the following image are displayed, without any errors, it indicates that the Docker image has been successfully run.
@@ -67,7 +65,11 @@ After downloading the data, you will receive three folders ("New", "1" and "2"),
 
 Each time you run the code, copy one of the folders to your path and set it as the working directory. This working directory corresponds to {work directory} in the code.
 
-"CM-Drug-New.R" is used to process the 2020 New data, "CM-Drug-1.R" is used to process Phase 1 data, "CM-Drug-2.R" is used to process Phase 2 data.
+"CM-Drug-New.R" is used to process the 2020 New data,
+
+"CM-Drug-1.R" is used to process Phase 1 data, 
+
+"CM-Drug-2.R" is used to process Phase 2 data.
 
 After building the Docker image and preparing the files, you can run the code. 
 
