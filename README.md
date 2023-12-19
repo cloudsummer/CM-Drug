@@ -49,6 +49,7 @@ bash docker_run_script up 9998
 if only the two lines of feedback shown in the following image are displayed, without any errors, it indicates that the Docker image has been successfully run.
 
 <img width="407" alt="image" src="https://github.com/cloudsummer/CM-Drug/assets/24847317/afe1e273-0e3f-4f8e-8322-df08c05f4e67">
+<img width="464" alt="1-docker启动" src="https://github.com/cloudsummer/CM-Drug/assets/24847317/5891df10-96c9-4559-96b8-552500f73f70">
 
 
 
