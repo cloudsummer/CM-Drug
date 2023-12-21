@@ -77,7 +77,7 @@ After building the Docker image and preparing the files, you can run the code.
 
 ### Demo
 
-Below is the video we created, demonstrating the code execution process using CM-Drug-New as an example.
+Below is the video we created, demonstrating the code execution process using "CM-Drug-New" as an example.
 
 (Click on the image below to be redirected to the corresponding YouTube video link.)
 
