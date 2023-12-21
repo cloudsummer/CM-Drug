@@ -546,7 +546,7 @@ cat(sprintf('END TIME: %s\n\n', date()))
 CM_Drug.data <- readRDS("./Data/Compound_Data/CM_Drug.sample")
 CM_Drug.data.gtc<- new("GCT", mat=CM_Drug.data)
 write_gctx(CM_Drug.data.gtc, 
-           #compression_level = 9,
+           compression_level = 9,
            "./Data/Compound_Data/CM_Drug.data.gctx",
            appenddim = FALSE)
 
