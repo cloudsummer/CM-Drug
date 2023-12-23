@@ -71,7 +71,7 @@ Each time you run the code, copy one of the folders to your path and set it as t
 
 "CM-Drug-2.R" is used to process Phase 2 data.
 
-The data from LINCS2020 is the most recent, published in December 2021. The new dataset has made adjustments in terms of standardization and other methodologies. It is recommended to utilize the LINCS2020 data.
+The data from LINCS2020 is the most recent, published in December 2021. The new dataset has made adjustments in terms of standardization and other methodologies. It is recommended to utilize the new data.
 
 After building the Docker image and preparing the files, you can run the code. 
 
