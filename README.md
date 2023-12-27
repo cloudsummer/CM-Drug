@@ -63,7 +63,7 @@ After downloading the data, you will receive three folders ("New", "1" and "2"),
 <img width="315" alt="image" src="https://github.com/cloudsummer/CM-Drug/assets/24847317/4d36ed29-8cfd-4632-842f-5902c4beb658">
 
 
-Each time you run the code, copy one of the folders to your path and set it as the working directory. This working directory corresponds to {work directory} in the code.
+Each time you run the code, copy one of the folders ("New", "1" or "2") to your path and set it as the working directory. This working directory corresponds to {work directory} in the code.
 
 "CM-Drug-New.R" is used to process the 2020 New data,
 
@@ -71,9 +71,9 @@ Each time you run the code, copy one of the folders to your path and set it as t
 
 "CM-Drug-2.R" is used to process Phase 2 data.
 
-The data from LINCS2020 is the most recent, published in December 2021. The new dataset has made adjustments in terms of standardization and other methodologies. It is recommended to utilize the new data.
+(The data from LINCS2020 is the most recent, published in December 2021. The new dataset not only contains a significantly larger amount of data but has also undergone adjustments in terms of standardization and other methodologies. It is recommended to utilize the new data.)
 
-After building the Docker image and preparing the files, you can run the code. 
+After creating the Docker container, preparing the files, and setting the working directory, you can run the code. 
 
 ### Demo
 
