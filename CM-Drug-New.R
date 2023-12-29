@@ -1,4 +1,4 @@
-####Code of CM_Drug
+####Code of CM-Drug-New
 
 #Function definition
 .systemInfo = function(eachThreadDir, spid, type, idx) {
