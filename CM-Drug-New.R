@@ -6,7 +6,6 @@
   return(paste0(tempInfo, idx, '.trds'))
 }
 
-#Silence remove
 function.remove = function(paths, check = FALSE) {
   stopifnot(is.character(paths))
   stopifnot(is.logical(check))
