@@ -21,7 +21,7 @@ Just simply run the following code on a server with Docker installed:
 (Docker version we used is 20.10.21, build 20.10.21-0ubuntu1~22.04.3) 
 
 ```
-#the docker image was made by the author of CM-Drug
+#the docker image was made by the author of CM-Drug (digest: sha256:a05da402aceb12fcf0ae3aa73e4801a2096732370dd78c1fcb1bf12b4a02ee61 size: 4537)
 docker pull xynicoo/rstudio:4.3-7
 ```
 
