@@ -27,7 +27,7 @@ function usage {
 		echo "	rmi -> remove image of xynicoo/rstudio:4.3-7"
 		echo "	pull -> pull latest image of xynicoo/rstudio:4.3-7"
 		echo "For example:"
-		echo "	xy_rocker up 9191"
+		echo "	xy_rocker up 9999"
 		exit 1
 	fi
 
