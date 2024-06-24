@@ -281,8 +281,6 @@ for (indext_iii in 1) {
     
     controlSubset = subset(controlsDF, rna_centre == centre_bbb & cell_id == cell_ddd & pert_ctime == time_eee)
     
-   
-    }
     
   })
   
