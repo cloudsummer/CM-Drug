@@ -1,0 +1,174 @@
+##please cite this article as: (https://www.nature.com/articles/s41590-024-01789-x)
+
+Yun Xia, Xin Li, Nana Bie, Wen Pan, Ya-Ru Miao, Mei Yang, Yan Gao, Chuang Chen, Hanqing Liu, Lu Gan, An-Yuan Guo.
+A method for predicting drugs that can boost efficacy of immune checkpoint blockade, Nature Immunology.
+
+#!/usr/bin/env bash
+param=$#
+serv=$1
+variable=$2
+port=${variable:-6679}
+
+arr[1]='up'
+arr[2]='dn'
+arr[3]='ss'
+arr[4]='ex'
+arr[5]='imgs'
+arr[6]='rmi'
+arr[7]='pull'
+
+function usage {
+	if [ "$param" -gt 2 -o "${param}" -lt 1 ]
+	then
+		echo "Usage:"
+		echo "	xy_rocker [up|dn|ss|ex|imgs|rmi] [port|image-id]"
+		echo "Details:"
+		echo "	up -> startup a container for xy_rocker, default port 8686."
+		echo "	dn -> shutdown a container or all container of xy_rocker."
+		echo "	ex -> exec xy_rocker container."
+		echo "	ss -> status of xy_rocker container."
+		echo "	imgs -> list images of xynicoo/rstudio:4.3-7"
+		echo "	rmi -> remove image of xynicoo/rstudio:4.3-7"
+		echo "	pull -> pull latest image of xynicoo/rstudio:4.3-7"
+		echo "For example:"
+		echo "	xy_rocker up 9999"
+		exit 1
+	fi
+
+	if [[ ! "${arr[@]}" =~ "$serv" ]]
+	then
+		echo "Error:"
+		echo "	Input must be one of 'up', 'dn', 'ss', 'ex', 'imgs' and 'rmi' to start xy_rocker"
+		echo "Example:"
+		echo "	xy_rocker ss"
+		exit 1
+	fi
+}
+
+function cpf {
+	d=$1
+	for i in `find ${HOME} -mindepth 1 -prune -name '.*'`;
+	do
+		name=`basename ${i}`
+		[[ ${name} =~ '.rstudio' ]] && continue
+		cmd="cp -rf ${i} ${d}/${name}"
+		eval ${cmd}
+	done
+}
+
+function lnf {
+	d=$1
+	for i in `find /home/USER -mindepth 1 -prune -type f -name '.*'`;
+	do
+		name=`basename ${i}`
+		[[ ${name} =~ '.rstudio' ]] && continue
+		[[ ${name} =~ '.vscode' ]] && continue
+		cmd="ln ${i} ${d}/${name}"
+		eval ${cmd}
+	done
+}
+
+function up {
+
+	cs=(`docker ps|grep -o xy_rocker.*$`)
+	[[ ${cs[@]} =~ "xy_rocker-${port}" ]] && echo "Error: xy_rocker-${port} exists." && exit 1
+
+	[[ ${port} -lt 8686 ]] && echo "Error: New port should be larger than 8686." && exit 1
+
+	jd=/home/USER/.xyrocker/xyrocker-${port}
+        
+                docker run -d --rm -p ${port}:8787 \
+                -v ${jd}:${HOME}/ \
+                -v /home/USER:/home/USER/1_home_USER/ \
+                -e USER=${USER} -e PASSWORD=PASSWORD \
+		-e USERID=$UID -e GROUPID=$GID -e ROOT=TRUE \
+		-name USER_rstudio_${port} xynicoo/rstudio:4.3-7
+
+	echo "Start xy_rocker successfully with port ${port}."
+}
+
+function dn {
+	cs=(`docker ps -a|grep -o xy_rocker.*$`)
+	if [ ${param} -eq 2 ]
+	then
+		c="xy_rocker-${port}"
+		if [[ ${cs[@]} =~ ${port} ]]
+		then
+			docker container stop ${c}
+			echo "Container ${c} is stopped"
+			docker container rm ${c}
+			echo "Container ${c} is removed"
+		else
+			echo "Error: Container ${c} not in the docker ps -a"
+		fi
+	else
+		echo "Notice: You are going to stop all xy_rocker container ${cs[@]}."
+		echo "Input (yes/no):"
+		read choice
+		case ${choice} in
+			yes)
+				echo "All xy_rocker container stopped."
+				for c in ${cs[@]};
+				do
+					docker container stop ${c}
+					echo "Container ${c} is stopped"
+					docker container rm ${c}
+					echo "Container ${c} is removed"
+				done
+				;;
+			no)
+				echo "No xy_rocker container stopped."
+				;;
+			*)
+				echo "No xy_rocker container stopped."
+				;;
+		esac
+	fi
+}
+
+function ss {
+	info=`docker ps|grep xy_rocker`
+	[[ -z ${info} ]] && echo "Notice: no xy_rocker container." || docker ps|grep xy_rocker
+}
+
+function ex {
+	cs=(`docker ps -a|grep -o xy_rocker.*$`)
+	c="xy_rocker-${port}"
+	[[ ${param} -ne 2 ]] && echo "Error: Input port for container." && ss && exit 1
+
+	if [[ ${param} -eq 2 && ${cs[@]} =~ ${port} ]]
+	then
+		docker exec -it -u $UID:$GID -w ~ ${c} bash
+	else
+		echo "Notice: Input valid xy_rocker port."
+		docker ps -a|grep xy_rocker
+	fi
+}
+
+function imgs {
+	docker image ls xynicoo/rstudio:4.3-7
+}
+
+function rmi {
+	if [ ${param} -eq 2 ]
+	then
+		docker image rm ${variable}
+	else
+		echo "Notice: Input valid xy_rocker image."
+		exit 1
+	fi
+
+}
+
+function pull {
+	docker pull xynicoo/rstudio:4.3-7
+}
+
+usage
+[[ ${serv} = 'up' ]] && up || usage
+[[ ${serv} = 'dn' ]] && dn || usage
+[[ ${serv} = 'ss' ]] && ss || usage
+[[ ${serv} = 'ex' ]] && ex || usage
+[[ ${serv} = 'rmi' ]] && rmi || usage
+[[ ${serv} = 'imgs' ]] && imgs || usage
+[[ ${serv} = 'pull' ]] && pull || usage
