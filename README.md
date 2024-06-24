@@ -56,7 +56,7 @@ The size of the data for the input file is huge. Due to GitHub's file size limit
 
 After downloading the data, you will receive the folder named "data", which contains the data.
 
-<img width="118" alt="image" src="https://github.com/cloudsummer/CM/assets/24847317/7c097fa7-851a-4742-9e34-37f7ace72fa7">
+<img width="118" alt="313563684-7c097fa7-851a-4742-9e34-37f7ace72fa7" src="https://github.com/cloudsummer/CM-Drug/assets/24847317/b41cae5b-66a5-49cb-beb7-64abf0303b2c">
 
 If you run the code, copy the folders ("data") to your path and set it as the working directory. This working directory corresponds to {work directory} in the code.
 
