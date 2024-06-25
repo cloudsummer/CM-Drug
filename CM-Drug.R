@@ -1,6 +1,6 @@
-####If you have any questions or are interested in collaborating, please feel free to contact us at hsiayun@foxmail.com. Let's work together to advance the field of immunotherapy.
-
-####Code of CM-Drug
+#### If you have any questions or are interested in collaborating, please feel free to contact us at hsiayun@foxmail.com. Let's work together to advance the field of immunotherapy.
+#### Any use of this code should refer to the article: https://doi.org/10.1038/s41590-024-01789-x (Nature Immunology)
+#### Code of CM-Drug
 
 #Core & Minor gene sets
 setwd("workingDirectory/")
