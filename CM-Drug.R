@@ -3,6 +3,7 @@
 #Core & Minor gene sets
 setwd("workingDirectory/")
 
+
 list_CM_gene_set=list()
 
 list_CM_gene_set[[1]] <- 
@@ -142,8 +143,24 @@ function.freadXZ = function(file, sep = '\t', header = TRUE) {
 }
 
 
+function.XZSaveRDS = function(obj, file, threads = 32, compression = 6) {
+  
+  stopifnot(is.character(file))
+  
+  function.remove(paths = file, check = TRUE)
+  
+  xzCommand = sprintf('xz -z -T %s -%s > %s', threads, compression, file)
+  
+  xzConnection = pipe(description = xzCommand, open = 'wb')
+  
+  saveRDS(object = obj, file = xzConnection)
+  
+  close(xzConnection)
+}
+
 ################################################################################
 ################################################################################
+
 
 require(data.table)
 require(stringi)
@@ -264,6 +281,15 @@ for (indext_iii in 1) {
   )
   useDF = unique(sampleMetadata[, selectionVector])
   
+  #Sample Counts
+  sampleMetadata = as.data.table(sampleMetadata)
+  setkey(sampleMetadata, rna_centre, pert_type, pert_cval)
+  useDF$sampleCount = unlist(mclapply(1:nrow(useDF), mc.preschedule = TRUE, mc.cores = 160, mc.cleanup = TRUE, FUN = function(i) {
+    tempCondition = useDF[i, ]
+    return(sampleMetadata[.(tempCondition$rna_centre, tempCondition$pert_type, tempCondition$pert_cval), .N, nomatch = 0])
+  }), recursive = FALSE, use.names = FALSE)
+  sampleMetadata = as.data.frame(sampleMetadata)
+  
   # Filter out Sample Size == 1
   useDF = subset(useDF, sampleCount > 1)
   
@@ -281,6 +307,32 @@ for (indext_iii in 1) {
     
     controlSubset = subset(controlsDF, rna_centre == centre_bbb & cell_id == cell_ddd & pert_ctime == time_eee)
     
+    # Compound Data Resolving
+    if (type_ccc == 'trt_cp') {
+      controlSubset = subset(controlSubset, pert_type %in% c('ctl_vehicle', 'ctl_untrt'))
+      
+      # SKIP if No Matching: 
+      if (nrow(controlSubset) == 0) {
+        return(NULL)
+      }
+      
+      if ('DMSO' %in% controlSubset$pert_iname) {
+     
+        controlSubset = subset(controlSubset, pert_iname == 'DMSO')
+        finalOutput = controlSubset[order(controlSubset$sampleCount, decreasing = TRUE), ][1, ]
+        return(SelectionResolver(conditionDF = condition_aaa, controlDF = finalOutput))
+      }
+      
+      if (any(c('PBS', 'H2O', 'UnTrt') %in% controlSubset$pert_iname)) {
+        
+        finalOutput = controlSubset[order(controlSubset$sampleCount, decreasing = TRUE), ][1, ]
+        return(SelectionResolver(conditionDF = condition_aaa, controlDF = finalOutput))
+        
+      } else {
+        finalOutput = controlSubset[order(controlSubset$sampleCount, decreasing = TRUE), ][1, ]
+        return(SelectionResolver(conditionDF = condition_aaa, controlDF = finalOutput))
+      }
+    }
     
   })
   
@@ -345,6 +397,7 @@ options(
 
 #Preparation 
 ################################################################################
+
 # Creation of Output Directory
 outDir = 'Data/Compound_Data/'
 dir.create(outDir, recursive = TRUE, showWarnings = FALSE)
@@ -396,7 +449,7 @@ SPID_mmm = function.getPID()
 referenceColumn = matchedDF$case_ID
 caseCount = length(matchedDF$case_ID)
 geneCount = length(referenceRow)
-registerDoParallel(cores = 180)
+registerDoParallel(cores = 40)
 
 # Cleaning Cache
 allPath = c(
@@ -483,15 +536,14 @@ cat(sprintf('END TIME: %s\n\n', date()))
 
 CM_Drug.data <- readRDS("./Data/Compound_Data/CM_Drug.data")
 CM_Drug.data.gtc<- new("GCT", mat=CM_Drug.data)
-write_gctx(CM_Drug.data.gtc, 
-           compression_level = 9,
-           "./Data/Compound_Data/CM_Drug.data.gctx",
-           appenddim = FALSE)
+#write_gctx(CM_Drug.data.gtc, 
+#           compression_level = 9,
+#           "./Data/Compound_Data/CM_Drug.data.gctx",
+#           appenddim = FALSE)
 
 rm(list = ls())
-setwd("workingDirectory/")
+setwd("~/tools/repository/CM-Drug")
 CM_Drug.condition <- readRDS("./Data/Compound_Data/CM_Drug.condition")
-
 
 data_trt_cp <- list()
 data_trt_cp.df <- list()
@@ -521,6 +573,7 @@ save.image("template.RData")
 
 ################################################################################
 ################################################################################
+
 #Use fgsea to perform GSEA 
 options(
   stringsAsFactors = FALSE,
@@ -529,7 +582,7 @@ options(
 library(fgsea)
 library(cmapR)
 library(tidyverse)
-setwd("workingDirectory/")
+setwd("~/tools/repository/CM-Drug")
 resultDir="./result/cp/"
 dir.create(resultDir, recursive = TRUE, showWarnings = FALSE)
 load("./template.RData")
@@ -537,12 +590,12 @@ load("./template.RData")
 #library(tictoc)
 library(furrr)
 library(future)
-plan(multisession, workers = 120)
+plan(multisession, workers = 40)
 
 .startTime = date()
 
 for(j in c(1:5)){
-  setwd("workingDirectory/")
+  setwd("~/tools/repository/CM-Drug")
   load("./template.RData")
   
   fun_cmap_fgsea <- function(x){
@@ -562,13 +615,12 @@ for(j in c(1:5)){
 cat(sprintf('START TIME: %s\n', .startTime))
 cat(sprintf('END TIME: %s\n\n', date()))
 
-
 ################################################################################
 ################################################################################
 #tidy the results
 
-setwd("workingDirectory/result/cp/")
-load("workingDirectory/template.RData")
+setwd("~/tools/repository/CM-Drug/result/cp/")
+load("~/tools/repository/CM-Drug/template.RData")
 
 fgsea.res.trt_cp <- list()
 for(i in 1:5){fgsea.res.trt_cp[[i]] <- readRDS(paste("./c",i,"_fgsea.res.trt_cp_super.RDS",sep = ""))}
@@ -592,7 +644,7 @@ for(i in 1:8){
 
 saveRDS(fgsea.clue.order_with_id,"fgsea.clue.order_with_id.RDS")
 
-setwd("workingDirectory/")
+setwd("~/tools/repository/CM-Drug")
 
 fgsea.clue.order <- readRDS("./result/cp/fgsea.clue.order_with_id.RDS")
 
@@ -629,14 +681,18 @@ load("./template.RData")
 
 list.good <- list()
 for(i in 1:8){list.good[[i]] <- fgsea.clue.order[[i]][as.numeric(good.id),]}
-good.df <- as.data.frame(matrix(data = NA,nrow =dim(list.good[[1]])[1],ncol = 8));{for(i in 1:8){good.df[,i] <- list.good[[i]][,6]}}
+good.df <- as.data.frame(matrix(data = NA,nrow =dim(list.good[[1]])[1],ncol = 8));
+{for(i in 1:8){good.df[,i] <- list.good[[i]][,6]}}
 colnames(good.df) <- names(fgsea.clue.order)
 
 good.score <- vector();
 ################################################################################
-#CM-Score  ##  Note that fgsea may cause a rearrangement of the gene set, as shown in the Core & Minor gene set section at the beginning of the code
-
-for(i in 1:dim(list.good[[1]])[1]){good.score[i] <- 0.4986+0.0969*good.df[,1][i]+0.0892*good.df[,2][i]+0.0307*good.df[,3][i]+0.0117*good.df[,4][i]+0.0124*good.df[,6][i]+ 0.0213*good.df[,7][i]}
+#CM-Score
+for(i in 1:dim(list.good[[1]])[1]){
+  good.score[i] <- 0.4986+0.0969*good.df[,'Antigen_Processing_and_Presentation'][i]+
+    0.0892*good.df[,"NaturalKiller_Cell_Cytotoxicity"][i]+0.0307*good.df[,"TCR_Signaling_Pathway"][i]+
+    0.0117*good.df[,"Cytotoxiclty_of_ImmuCellAI"][i]+0.0124*good.df[,'Antimicrobials'][i]+ 
+    0.0213*good.df[,"BCR_Signaling_Pathway"][i]}
 
 CM_Drug.condition <- readRDS("./Data/Compound_Data/CM_Drug.condition")
 
