@@ -634,7 +634,8 @@ colnames(good.df) <- names(fgsea.clue.order)
 
 good.score <- vector();
 ################################################################################
-#CM-Score
+#CM-Score  ##  Note that fgsea may cause a rearrangement of the gene set, as shown in the Core & Minor gene set section at the beginning of the code
+
 for(i in 1:dim(list.good[[1]])[1]){good.score[i] <- 0.4986+0.0969*good.df[,1][i]+0.0892*good.df[,2][i]+0.0307*good.df[,3][i]+0.0117*good.df[,4][i]+0.0124*good.df[,6][i]+ 0.0213*good.df[,7][i]}
 
 CM_Drug.condition <- readRDS("./Data/Compound_Data/CM_Drug.condition")
