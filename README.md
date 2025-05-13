@@ -1,5 +1,14 @@
 ## If you have any questions or are interested in collaborating, please feel free to contact us at hsiayun@foxmail.com. Let's work together to advance the field of immunotherapy.
 
+[Update 25.05.12]
+
+ICBcDrug: A Web Database Based on the CM-Drug Method
+
+To facilitate the online use of CM-Drug, we provide access to our lab-developed web platform, [ICBcDrug](https://guolab.wchscu.cn/ICBcDrug/). The ICBcDrug database integrates drug information, CM-Drug-based computational predictions, and literature-mined evidence for compounds that may enhance immune checkpoint blockade (ICB) therapy. 
+
+All predictions available in ICBcDrug are generated using the CM-Drug algorithm. If you prefer not to install the code locally, you can directly explore our interactive modules on the ICBcDrug platform.
+
+
 ## CM-Drug
 
 ![313563468-837b6b4e-b59d-4568-8224-e52965d5634b](https://github.com/cloudsummer/CM-Drug.1/assets/24847317/f211bceb-7480-4c60-80c0-190fb0359b9f)
